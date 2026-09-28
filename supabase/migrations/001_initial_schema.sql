@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT UNIQUE NOT NULL,
-  full_name TEXT DEFAULT 'Subbu',
+  full_name TEXT DEFAULT 'Admin',
   business_name TEXT DEFAULT 'Vasavi Events',
   role TEXT DEFAULT 'admin',
   created_at TIMESTAMPTZ DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,

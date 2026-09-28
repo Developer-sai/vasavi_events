@@ -28,6 +28,10 @@ export async function updateEventAction(id: string, updates: Partial<EventItem>)
   revalidatePath("/admin");
   revalidatePath("/admin/events");
   revalidatePath(`/admin/events/${id}`);
+  if (updated?.public_slug) {
+    revalidatePath(`/gallery/${updated.public_slug}`);
+  }
+  revalidatePath("/");
   return updated;
 }
 

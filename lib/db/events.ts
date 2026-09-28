@@ -100,8 +100,9 @@ export async function createEvent(eventData: Partial<EventItem>): Promise<EventI
     event_date: eventData.event_date || new Date().toISOString().split("T")[0],
     description: eventData.description || "",
     cover_image_url:
-      eventData.cover_image_url ||
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=85",
+      eventData.cover_image_url !== undefined
+        ? eventData.cover_image_url
+        : "",
     public_slug: eventData.public_slug || `event-${Date.now()}`,
     expires_at: eventData.expires_at || null,
     is_published: eventData.is_published ?? true,
@@ -162,17 +163,23 @@ export async function createEvent(eventData: Partial<EventItem>): Promise<EventI
 }
 
 export async function updateEvent(id: string, updates: Partial<EventItem>): Promise<EventItem | null> {
+  const { folders, photos, ...dbUpdates } = updates;
+
   if (isSupabaseConfigured()) {
     try {
       const supabase = await createServerSupabase();
       const { data, error } = await supabase
         .from("events")
         .update({
-          ...updates,
+          ...dbUpdates,
           updated_at: new Date().toISOString(),
         })
         .eq("id", id)
-        .select()
+        .select(`
+          *,
+          folders (*),
+          photos (*)
+        `)
         .single();
 
       if (!error && data) {

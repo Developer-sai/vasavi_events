@@ -7,13 +7,14 @@ import {
   ShieldCheck,
   FolderTree,
   QrCode,
-  Sparkles,
   ExternalLink,
+  Lock,
 } from "lucide-react";
+import { GalleryLookupForm } from "@/components/common/GalleryLookupForm";
 
 export default async function HomePage() {
   const events = await getEvents();
-  const featuredEvent = events[0] || null;
+  const publishedEvents = events.filter((e) => e.is_published);
 
   return (
     <div className="min-h-screen bg-[#12100E] text-[#FAF8F5] flex flex-col justify-between selection:bg-[#C59350]/30 selection:text-[#FAF8F5]">
@@ -38,7 +39,7 @@ export default async function HomePage() {
         {/* Subtle radial ambient glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C59350]/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto">
+        <div className="relative z-10 max-w-4xl mx-auto w-full">
           {/* Brand Emblem */}
           <BrandEmblem size="lg" subtitle="HAUTE COUTURE MEMORIES & ARCHIVES" theme="dark" />
 
@@ -54,18 +55,9 @@ export default async function HomePage() {
             Delivering high-resolution albums directly to families with effortless, zero-login shareable links.
           </p>
 
-          {/* Primary Client CTA */}
-          <div className="mt-10 flex items-center justify-center">
-            {featuredEvent && (
-              <Link
-                href={`/gallery/${featuredEvent.public_slug}`}
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-[#C59350] via-[#D1A870] to-[#C59350] hover:brightness-110 text-[#12100E] font-medium text-sm transition shadow-xl shadow-[#C59350]/20"
-              >
-                <Sparkles className="w-4 h-4 text-[#12100E]" />
-                Explore Featured Gallery ({featuredEvent.name})
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            )}
+          {/* Direct Gallery Access Lookup Form */}
+          <div className="mt-10 max-w-md mx-auto">
+            <GalleryLookupForm />
           </div>
 
           {/* Feature Pillars */}
@@ -101,45 +93,64 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Current Event Galleries Showcase */}
-          <div className="mt-16 pt-12 border-t border-[#262320]/80">
-            <h4 className="font-serif text-xl text-[#FAF8F5] mb-6 font-light">Recent Curated Galleries</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {events.map((evt) => (
-                <Link
-                  key={evt.id}
-                  href={`/gallery/${evt.public_slug}`}
-                  className="group block relative overflow-hidden rounded-2xl bg-[#1A1714] border border-[#262320] hover:border-[#C59350]/50 transition text-left"
-                >
-                  <div className="aspect-[16/10] w-full overflow-hidden relative">
-                    <img
-                      src={evt.cover_image_url}
-                      alt={evt.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] tracking-wider uppercase font-semibold text-[#C59350]">
-                      {evt.event_type}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h5 className="font-serif text-base text-[#FAF8F5] group-hover:text-[#C59350] transition truncate font-medium">
-                      {evt.name}
-                    </h5>
-                    <p className="text-[11px] text-[#FAF8F5]/60 font-sans mt-0.5">
-                      {evt.customer_names} • {evt.event_date}
-                    </p>
-                    <div className="flex items-center justify-between mt-3 text-[10px] text-[#FAF8F5]/50">
-                      <span>{evt.photos?.length || 0} Memories</span>
-                      <span className="flex items-center gap-1 text-[#C59350] font-medium">
-                        Open Collection <ExternalLink className="w-3 h-3" />
+          {/* Current Event Galleries Showcase (Only renders if real events exist) */}
+          {publishedEvents.length > 0 ? (
+            <div className="mt-16 pt-12 border-t border-[#262320]/80">
+              <h4 className="font-serif text-xl text-[#FAF8F5] mb-6 font-light">Active Curated Galleries</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                {publishedEvents.map((evt) => (
+                  <Link
+                    key={evt.id}
+                    href={`/gallery/${evt.public_slug}`}
+                    className="group block relative overflow-hidden rounded-2xl bg-[#1A1714] border border-[#262320] hover:border-[#C59350]/50 transition text-left"
+                  >
+                    <div className="aspect-[16/10] w-full overflow-hidden relative bg-[#262320]">
+                      {evt.cover_image_url ? (
+                        <img
+                          src={evt.cover_image_url}
+                          alt={evt.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1A1714] to-[#262320] p-4 text-center">
+                          <BrandEmblem size="sm" theme="dark" />
+                          <span className="text-[11px] text-[#C59350] font-serif mt-1">{evt.name}</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      <span className="absolute bottom-2.5 left-3 text-[10px] tracking-wider uppercase font-semibold text-[#C59350]">
+                        {evt.event_type}
                       </span>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                    <div className="p-4">
+                      <h5 className="font-serif text-base text-[#FAF8F5] group-hover:text-[#C59350] transition truncate font-medium">
+                        {evt.name}
+                      </h5>
+                      <p className="text-[11px] text-[#FAF8F5]/60 font-sans mt-0.5">
+                        {evt.customer_names} • {evt.event_date}
+                      </p>
+                      <div className="flex items-center justify-between mt-3 text-[10px] text-[#FAF8F5]/50">
+                        <span>{evt.photos?.length || 0} Memories</span>
+                        <span className="flex items-center gap-1 text-[#C59350] font-medium">
+                          Open Collection <ExternalLink className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="mt-16 pt-12 border-t border-[#262320]/60 max-w-lg mx-auto">
+              <div className="p-6 rounded-2xl bg-[#1A1714]/40 border border-[#262320] text-center">
+                <Lock className="w-5 h-5 text-[#C59350] mx-auto mb-2 opacity-80" />
+                <h4 className="font-serif text-sm font-medium text-[#FAF8F5]">Private Album Delivery</h4>
+                <p className="text-xs text-[#FAF8F5]/60 mt-1 leading-relaxed font-light">
+                  All celebrations are delivered privately. Open your personalized WhatsApp memory link or scan the entrance QR standee at the venue to view your album.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

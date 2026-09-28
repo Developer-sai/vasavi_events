@@ -110,68 +110,93 @@ export default async function AdminDashboardPage() {
           </div>
 
           <div className="divide-y divide-[#EBE6DF]">
-            {events.map((evt: EventItem) => {
-              const isExpired = evt.expires_at ? new Date(evt.expires_at) < new Date() : false;
-
-              return (
-                <div
-                  key={evt.id}
-                  className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#FAF8F5]/60 transition"
+            {events.length === 0 ? (
+              <div className="p-12 text-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#C59350]/10 text-[#C59350] flex items-center justify-center mx-auto mb-3">
+                  <CalendarHeart className="w-6 h-6" />
+                </div>
+                <h3 className="font-serif text-lg text-[#1A1714]">No Events Created Yet</h3>
+                <p className="text-xs text-[#7A6F64] mt-1 max-w-sm mx-auto">
+                  Begin by creating your first wedding or celebration gallery to upload photos and generate share links.
+                </p>
+                <Link
+                  href="/admin/events/new"
+                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-[#1A1714] text-[#FAF8F5] text-xs font-medium hover:bg-[#262320] transition shadow-xs"
                 >
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={evt.cover_image_url}
-                      alt={evt.name}
-                      className="w-16 h-16 rounded-xl object-cover border border-[#EBE6DF] shrink-0"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-serif text-lg text-[#1A1714] font-medium">
-                          {evt.name}
-                        </h3>
-                        <span
-                          className={`text-[10px] font-sans px-2 py-0.5 rounded-full font-medium ${
-                            isExpired
-                              ? "bg-rose-100 text-rose-700"
-                              : "bg-emerald-100 text-emerald-800"
-                          }`}
-                        >
-                          {isExpired ? "Expired" : "Active"}
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#7A6F64] mt-0.5">
-                        {evt.customer_names} • Ceremony: {formatDate(evt.event_date)}
-                      </p>
-                      <div className="flex items-center gap-4 text-[11px] text-[#A69C90] mt-1 font-mono">
-                        <span>{evt.folders?.length || 0} folders</span>
-                        <span>•</span>
-                        <span>{evt.photos?.length || 0} photos</span>
-                        <span>•</span>
-                        <span>{evt.view_count || 0} views</span>
+                  <PlusCircle className="w-4 h-4 text-[#C59350]" />
+                  Create Your First Event
+                </Link>
+              </div>
+            ) : (
+              events.map((evt: EventItem) => {
+                const isExpired = evt.expires_at ? new Date(evt.expires_at) < new Date() : false;
+
+                return (
+                  <div
+                    key={evt.id}
+                    className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#FAF8F5]/60 transition"
+                  >
+                    <div className="flex items-center gap-4">
+                      {evt.cover_image_url ? (
+                        <img
+                          src={evt.cover_image_url}
+                          alt={evt.name}
+                          className="w-16 h-16 rounded-xl object-cover border border-[#EBE6DF] shrink-0"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-xl bg-[#1A1714] border border-[#EBE6DF] flex items-center justify-center text-[#C59350] font-serif font-bold text-lg shrink-0">
+                          VE
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-serif text-lg text-[#1A1714] font-medium">
+                            {evt.name}
+                          </h3>
+                          <span
+                            className={`text-[10px] font-sans px-2 py-0.5 rounded-full font-medium ${
+                              isExpired
+                                ? "bg-rose-100 text-rose-700"
+                                : "bg-emerald-100 text-emerald-800"
+                            }`}
+                          >
+                            {isExpired ? "Expired" : "Active"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#7A6F64] mt-0.5">
+                          {evt.customer_names} • Ceremony: {formatDate(evt.event_date)}
+                        </p>
+                        <div className="flex items-center gap-4 text-[11px] text-[#A69C90] mt-1 font-mono">
+                          <span>{evt.folders?.length || 0} folders</span>
+                          <span>•</span>
+                          <span>{evt.photos?.length || 0} photos</span>
+                          <span>•</span>
+                          <span>{evt.view_count || 0} views</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Link
-                      href={`/gallery/${evt.public_slug}`}
-                      target="_blank"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#EBE6DF] hover:border-[#1A1714] text-xs font-sans text-[#1A1714] transition"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5 text-[#C59350]" />
-                      Public View
-                    </Link>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Link
+                        href={`/gallery/${evt.public_slug}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#EBE6DF] hover:border-[#1A1714] text-xs font-sans text-[#1A1714] transition"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-[#C59350]" />
+                        Public View
+                      </Link>
 
-                    <Link
-                      href={`/admin/events/${evt.id}`}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1A1714] hover:bg-[#262320] text-xs font-sans text-[#FAF8F5] transition"
-                    >
-                      Manage Studio
-                    </Link>
+                      <Link
+                        href={`/admin/events/${evt.id}`}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1A1714] hover:bg-[#262320] text-xs font-sans text-[#FAF8F5] transition"
+                      >
+                        Manage Studio
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 

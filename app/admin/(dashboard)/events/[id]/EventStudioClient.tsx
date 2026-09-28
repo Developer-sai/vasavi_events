@@ -20,8 +20,10 @@ import {
   Share2,
   Calendar,
   AlertTriangle,
+  Sparkles,
 } from "lucide-react";
 import { ShareModal } from "@/components/gallery/ShareModal";
+import { EditEventModal } from "@/components/admin/EditEventModal";
 import {
   createFolderAction,
   updateFolderAction,
@@ -42,6 +44,7 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
   const [selectedFolderId, setSelectedFolderId] = useState<string>("all");
   const [copied, setCopied] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Folder modal state
   const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
@@ -231,11 +234,18 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
       {/* 1. Event Masthead Studio Header */}
       <div className="bg-white border border-[#EBE6DF] rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <img
-            src={event.cover_image_url}
-            alt={event.name}
-            className="w-20 h-20 rounded-2xl object-cover border border-[#EBE6DF] shrink-0"
-          />
+          {event.cover_image_url ? (
+            <img
+              src={event.cover_image_url}
+              alt={event.name}
+              className="w-20 h-20 rounded-2xl object-cover border border-[#EBE6DF] shrink-0"
+            />
+          ) : (
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#1A1714] to-[#262320] border border-[#C59350]/30 flex flex-col items-center justify-center text-[#C59350] shrink-0 shadow-inner">
+              <Sparkles className="w-6 h-6 mb-0.5 text-[#C59350]" />
+              <span className="font-serif text-[9px] uppercase tracking-widest text-[#EED9B9]">VE</span>
+            </div>
+          )}
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-[#C59350]/15 text-[#C59350] border border-[#C59350]/30">
@@ -257,6 +267,15 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Edit Event Details */}
+          <button
+            onClick={() => setIsEditModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#C59350]/40 bg-[#C59350]/10 hover:bg-[#C59350]/20 text-xs font-medium text-[#1A1714] transition"
+          >
+            <Edit2 className="w-4 h-4 text-[#C59350]" />
+            Edit Event Details
+          </button>
+
           {/* Copy Link */}
           <button
             onClick={handleCopy}
@@ -628,6 +647,14 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
         onClose={() => setShareModalOpen(false)}
         eventTitle={event.name}
         slug={event.public_slug}
+      />
+
+      {/* 8. Edit Details Modal */}
+      <EditEventModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        event={event}
+        onSaved={(updated) => setEvent((prev) => ({ ...prev, ...updated }))}
       />
     </div>
   );

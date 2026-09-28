@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   CalendarHeart,
@@ -12,9 +12,33 @@ import {
   LogOut,
   Camera,
 } from "lucide-react";
+import { createClient as createBrowserSupabase } from "@/lib/supabase/client";
+import { clearAdminSessionAction } from "@/actions/auth";
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await clearAdminSessionAction();
+      const supabase = createBrowserSupabase();
+      await supabase.auth.signOut();
+    } catch {
+      // ignore
+    }
+
+    if (typeof document !== "undefined") {
+      document.cookie = "vasavi_admin_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("vasavi_admin_session");
+    }
+
+    router.push("/admin/login");
+  };
 
   const links = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -96,13 +120,14 @@ export function AdminSidebar() {
               </p>
             </div>
           </div>
-          <Link
-            href="/admin/login"
-            className="p-1.5 text-[#FAF8F5]/50 hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition"
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="p-1.5 text-[#FAF8F5]/50 hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition cursor-pointer"
             title="Sign Out"
           >
             <LogOut className="w-3.5 h-3.5" />
-          </Link>
+          </button>
         </div>
       </div>
     </aside>

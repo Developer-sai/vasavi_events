@@ -15,8 +15,11 @@ import {
   Image as ImageIcon,
   Eye,
   PlusCircle,
+  Edit2,
+  Sparkles,
 } from "lucide-react";
 import { deleteEventAction } from "@/actions/events";
+import { EditEventModal } from "@/components/admin/EditEventModal";
 
 interface EventsListClientProps {
   initialEvents: EventItem[];
@@ -28,6 +31,7 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
   const [filter, setFilter] = useState<"all" | "active" | "expired">("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingEvent, setEditingEvent] = useState<EventItem | null>(null);
 
   const now = new Date();
 
@@ -146,11 +150,21 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
                 <div>
                   {/* Event Cover Photo with Status Tag */}
                   <div className="relative aspect-[16/10] w-full bg-black/5 overflow-hidden">
-                    <img
-                      src={evt.cover_image_url}
-                      alt={evt.name}
-                      className="w-full h-full object-cover"
-                    />
+                    {evt.cover_image_url ? (
+                      <img
+                        src={evt.cover_image_url}
+                        alt={evt.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#1A1714] via-[#262320] to-[#12100E] flex flex-col items-center justify-center text-center p-4">
+                        <div className="w-10 h-10 rounded-full border border-[#C59350]/40 flex items-center justify-center mb-1.5 bg-[#C59350]/10">
+                          <Sparkles className="w-5 h-5 text-[#C59350]" />
+                        </div>
+                        <span className="font-serif text-sm text-[#FAF8F5] tracking-wide line-clamp-1">{evt.name}</span>
+                        <span className="text-[9px] text-[#C59350] tracking-widest uppercase mt-0.5">Vasavi Collection</span>
+                      </div>
+                    )}
                     <div className="absolute top-3 left-3 flex items-center gap-1.5">
                       <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-black/60 text-[#FAF8F5] backdrop-blur-xs">
                         {evt.event_type}
@@ -220,6 +234,15 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
                       )}
                     </button>
 
+                    {/* Edit Details */}
+                    <button
+                      onClick={() => setEditingEvent(evt)}
+                      className="p-2 rounded-lg border border-[#EBE6DF] hover:border-[#C59350]/40 hover:bg-[#C59350]/10 text-[#7A6F64] hover:text-[#1A1714] transition"
+                      title="Edit Event Details"
+                    >
+                      <Edit2 className="w-3.5 h-3.5 text-[#C59350]" />
+                    </button>
+
                     {/* View Public */}
                     <Link
                       href={`/gallery/${evt.public_slug}`}
@@ -253,6 +276,21 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
             );
           })}
         </div>
+      )}
+
+      {/* Edit Event Details Modal */}
+      {editingEvent && (
+        <EditEventModal
+          isOpen={Boolean(editingEvent)}
+          onClose={() => setEditingEvent(null)}
+          event={editingEvent}
+          onSaved={(updated) => {
+            setEvents((prev) =>
+              prev.map((e) => (e.id === updated.id ? { ...e, ...updated } : e))
+            );
+            setEditingEvent(null);
+          }}
+        />
       )}
     </div>
   );

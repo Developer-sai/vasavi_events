@@ -42,6 +42,7 @@ export default function NewEventPage() {
   const [eventType, setEventType] = useState("Wedding");
   const [eventDate, setEventDate] = useState(new Date().toISOString().split("T")[0]);
   const [description, setDescription] = useState("");
+  const [hasCoverPhoto, setHasCoverPhoto] = useState(false);
   const [coverUrl, setCoverUrl] = useState(COVER_PRESETS[0].url);
   const [slug, setSlug] = useState("");
   const [slugModified, setSlugModified] = useState(false);
@@ -73,7 +74,7 @@ export default function NewEventPage() {
         event_type: eventType,
         event_date: eventDate,
         description,
-        cover_image_url: coverUrl,
+        cover_image_url: hasCoverPhoto ? coverUrl : "",
         public_slug: finalSlug,
         expires_at: expiresAt,
         is_published: true,
@@ -194,57 +195,96 @@ export default function NewEventPage() {
             </div>
           </div>
 
-          {/* 2. Cover Photo Selection */}
+          {/* 2. Cover Photo Selection (Optional) */}
           <div className="bg-white border border-[#EBE6DF] rounded-2xl p-6 shadow-xs space-y-4">
-            <h3 className="font-serif text-lg font-medium text-[#1A1714] flex items-center gap-2">
-              <ImageIcon className="w-5 h-5 text-[#C59350]" />
-              Cover Image Selection
-            </h3>
-
-            <p className="text-xs text-[#7A6F64]">
-              Pick from our luxury South Indian wedding presets or paste an image URL:
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {COVER_PRESETS.map((preset, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setCoverUrl(preset.url)}
-                  className={`relative aspect-[16/10] rounded-xl overflow-hidden cursor-pointer border-2 transition ${
-                    coverUrl === preset.url
-                      ? "border-[#C59350] ring-2 ring-[#C59350]/30"
-                      : "border-transparent opacity-75 hover:opacity-100"
+            <div className="flex items-center justify-between">
+              <h3 className="font-serif text-lg font-medium text-[#1A1714] flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-[#C59350]" />
+                Cover Image (Optional)
+              </h3>
+              <div className="flex items-center gap-2 bg-[#FAF8F5] p-1 rounded-xl border border-[#EBE6DF]">
+                <button
+                  type="button"
+                  onClick={() => setHasCoverPhoto(false)}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
+                    !hasCoverPhoto
+                      ? "bg-[#1A1714] text-[#FAF8F5] shadow-xs"
+                      : "text-[#7A6F64] hover:text-[#1A1714]"
                   }`}
                 >
-                  <img
-                    src={preset.url}
-                    alt={preset.label}
-                    className="w-full h-full object-cover"
-                  />
-                  {coverUrl === preset.url && (
-                    <div className="absolute top-2 right-2 p-1 rounded-full bg-[#C59350] text-[#12100E]">
-                      <Check className="w-3 h-3 stroke-3" />
-                    </div>
-                  )}
-                  <span className="absolute bottom-1.5 left-2 text-[10px] text-white font-medium drop-shadow-md truncate">
-                    {preset.label}
-                  </span>
-                </div>
-              ))}
+                  No Cover Photo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHasCoverPhoto(true)}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
+                    hasCoverPhoto
+                      ? "bg-[#1A1714] text-[#FAF8F5] shadow-xs"
+                      : "text-[#7A6F64] hover:text-[#1A1714]"
+                  }`}
+                >
+                  Choose Photo
+                </button>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-[#7A6F64] uppercase tracking-wider mb-1">
-                Custom Cover URL
-              </label>
-              <input
-                type="url"
-                value={coverUrl}
-                onChange={(e) => setCoverUrl(e.target.value)}
-                placeholder="https://images.unsplash.com/..."
-                className="w-full text-xs font-mono bg-[#FAF8F5] border border-[#EBE6DF] rounded-xl px-4 py-2 outline-none focus:border-[#C59350] transition"
-              />
-            </div>
+            {!hasCoverPhoto ? (
+              <div className="p-6 rounded-xl bg-[#FAF8F5] border border-dashed border-[#EBE6DF] text-center">
+                <p className="font-serif text-sm text-[#1A1714] font-medium">
+                  Luxury Monogram Masthead
+                </p>
+                <p className="text-xs text-[#7A6F64] mt-1 max-w-sm mx-auto">
+                  No cover photo selected. The gallery will feature a regal gold monogram seal on an elegant velvet backdrop.
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-xs text-[#7A6F64]">
+                  Pick from our luxury wedding presets or paste an image URL:
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {COVER_PRESETS.map((preset, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => setCoverUrl(preset.url)}
+                      className={`relative aspect-[16/10] rounded-xl overflow-hidden cursor-pointer border-2 transition ${
+                        coverUrl === preset.url
+                          ? "border-[#C59350] ring-2 ring-[#C59350]/30"
+                          : "border-transparent opacity-75 hover:opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={preset.url}
+                        alt={preset.label}
+                        className="w-full h-full object-cover"
+                      />
+                      {coverUrl === preset.url && (
+                        <div className="absolute top-2 right-2 p-1 rounded-full bg-[#C59350] text-[#12100E]">
+                          <Check className="w-3 h-3 stroke-3" />
+                        </div>
+                      )}
+                      <span className="absolute bottom-1.5 left-2 text-[10px] text-white font-medium drop-shadow-md truncate">
+                        {preset.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-[#7A6F64] uppercase tracking-wider mb-1">
+                    Custom Cover URL
+                  </label>
+                  <input
+                    type="url"
+                    value={coverUrl}
+                    onChange={(e) => setCoverUrl(e.target.value)}
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full text-xs font-mono bg-[#FAF8F5] border border-[#EBE6DF] rounded-xl px-4 py-2 outline-none focus:border-[#C59350] transition"
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {/* 3. Public Slug & Expiry */}

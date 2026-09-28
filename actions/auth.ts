@@ -101,3 +101,24 @@ export async function bootstrapAdminUser(email: string, password: string) {
     message: "Service role key not configured. Please add admin user in Supabase Auth dashboard.",
   };
 }
+
+export async function setAdminSessionAction() {
+  const { cookies } = await import("next/headers");
+  const cookieStore = await cookies();
+  cookieStore.set("vasavi_admin_session", "active", {
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+  return { success: true };
+}
+
+export async function clearAdminSessionAction() {
+  const { cookies } = await import("next/headers");
+  const cookieStore = await cookies();
+  cookieStore.delete("vasavi_admin_session");
+  return { success: true };
+}
+

@@ -15,7 +15,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { createClient as createBrowserSupabase } from "@/lib/supabase/client";
-import { bootstrapAdminUser } from "@/actions/auth";
+import { bootstrapAdminUser, setAdminSessionAction } from "@/actions/auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -106,7 +106,11 @@ export default function AdminLoginPage() {
       }
     }
 
-    // Set demo authenticated cookie/storage
+    // Set authenticated session cookie and storage
+    await setAdminSessionAction();
+    if (typeof document !== "undefined") {
+      document.cookie = "vasavi_admin_session=active; path=/; max-age=604800; SameSite=Lax";
+    }
     if (typeof window !== "undefined") {
       localStorage.setItem("vasavi_admin_session", "active");
     }
@@ -114,7 +118,7 @@ export default function AdminLoginPage() {
     setTimeout(() => {
       setIsLoading(false);
       router.push("/admin");
-    }, 600);
+    }, 400);
   };
 
   const handleInstantBootstrap = async () => {
@@ -131,19 +135,18 @@ export default function AdminLoginPage() {
       } catch {
         // ignore
       }
+      await setAdminSessionAction();
+      if (typeof document !== "undefined") {
+        document.cookie = "vasavi_admin_session=active; path=/; max-age=604800; SameSite=Lax";
+      }
       localStorage.setItem("vasavi_admin_session", "active");
       setTimeout(() => {
         router.push("/admin");
-      }, 900);
+      }, 700);
     } else {
       setErrorMsg(res.message);
       setIsLoading(false);
     }
-  };
-
-  const handleDemoBypass = () => {
-    localStorage.setItem("vasavi_admin_session", "demo");
-    router.push("/admin");
   };
 
   return (
@@ -296,17 +299,6 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        {/* Quick Demo Bypass for Instant Testing */}
-        <div className="mt-5 text-center">
-          <button
-            type="button"
-            onClick={handleDemoBypass}
-            className="text-[11px] text-[#FAF8F5]/50 hover:text-[#C59350] transition font-sans inline-flex items-center gap-1.5 cursor-pointer"
-          >
-            <Sparkles className="w-3 h-3 text-[#C59350]" />
-            <span>Just testing? Enter Studio in Demo Mode →</span>
-          </button>
-        </div>
 
         <div className="mt-6 pt-5 border-t border-[#262320] text-center">
           <div className="inline-flex items-center gap-2 text-[11px] text-[#FAF8F5]/50">

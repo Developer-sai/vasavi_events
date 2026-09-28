@@ -3,8 +3,12 @@
 import { createClient } from "@supabase/supabase-js";
 
 export async function bootstrapAdminUser(email: string, password: string) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.SUPABASE_URL;
+  const serviceRoleKey =
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || supabaseUrl.includes("placeholder.supabase.co")) {
     return {

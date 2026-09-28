@@ -6,7 +6,9 @@ import { createClient as createServerSupabase } from "@/lib/supabase/server";
 let localEvents: EventItem[] = [...INITIAL_DEMO_EVENTS];
 
 function isSupabaseConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.SUPABASE_URL;
   return Boolean(url && !url.includes("placeholder.supabase.co"));
 }
 

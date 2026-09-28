@@ -16,25 +16,25 @@ ON CONFLICT (id) DO UPDATE SET
   file_size_limit = 26214400,
   allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/heic'];
 
--- 2. Storage Policies
--- Public can read images from event-media
+-- 2. Storage Policies (Idempotent)
+DROP POLICY IF EXISTS "Public Read Access on event-media" ON storage.objects;
 CREATE POLICY "Public Read Access on event-media"
   ON storage.objects FOR SELECT
   USING (bucket_id = 'event-media');
 
--- Authenticated admins can upload images
+DROP POLICY IF EXISTS "Authenticated Admin Upload Access" ON storage.objects;
 CREATE POLICY "Authenticated Admin Upload Access"
   ON storage.objects FOR INSERT
   TO authenticated
   WITH CHECK (bucket_id = 'event-media');
 
--- Authenticated admins can update images
+DROP POLICY IF EXISTS "Authenticated Admin Update Access" ON storage.objects;
 CREATE POLICY "Authenticated Admin Update Access"
   ON storage.objects FOR UPDATE
   TO authenticated
   USING (bucket_id = 'event-media');
 
--- Authenticated admins can delete images
+DROP POLICY IF EXISTS "Authenticated Admin Delete Access" ON storage.objects;
 CREATE POLICY "Authenticated Admin Delete Access"
   ON storage.objects FOR DELETE
   TO authenticated

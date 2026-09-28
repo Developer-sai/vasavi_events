@@ -80,7 +80,7 @@ CREATE INDEX IF NOT EXISTS idx_photos_event_folder ON public.photos(event_id, fo
 CREATE INDEX IF NOT EXISTS idx_views_event_time ON public.gallery_views(event_id, viewed_at);
 
 -- ==============================================================================
--- ROW LEVEL SECURITY (RLS) POLICIES
+-- ROW LEVEL SECURITY (RLS) POLICIES (Idempotent)
 -- ==============================================================================
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
@@ -89,16 +89,19 @@ ALTER TABLE public.photos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gallery_views ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Authenticated users can read and update their own profile
+DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
 CREATE POLICY "Users can view own profile"
   ON public.profiles FOR SELECT
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id);
 
 -- Events:
 -- Public can read ONLY published, non-expired events
+DROP POLICY IF EXISTS "Public can view published and active events" ON public.events;
 CREATE POLICY "Public can view published and active events"
   ON public.events FOR SELECT
   USING (
@@ -106,21 +109,25 @@ CREATE POLICY "Public can view published and active events"
   );
 
 -- Authenticated admins can do full CRUD on events
+DROP POLICY IF EXISTS "Admins can view all their events" ON public.events;
 CREATE POLICY "Admins can view all their events"
   ON public.events FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can insert events" ON public.events;
 CREATE POLICY "Admins can insert events"
   ON public.events FOR INSERT
   TO authenticated
   WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Admins can update events" ON public.events;
 CREATE POLICY "Admins can update events"
   ON public.events FOR UPDATE
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can delete events" ON public.events;
 CREATE POLICY "Admins can delete events"
   ON public.events FOR DELETE
   TO authenticated
@@ -128,6 +135,7 @@ CREATE POLICY "Admins can delete events"
 
 -- Folders:
 -- Public can read folders of published, non-expired events
+DROP POLICY IF EXISTS "Public can view folders for published events" ON public.folders;
 CREATE POLICY "Public can view folders for published events"
   ON public.folders FOR SELECT
   USING (
@@ -139,6 +147,7 @@ CREATE POLICY "Public can view folders for published events"
     )
   );
 
+DROP POLICY IF EXISTS "Admins can manage folders" ON public.folders;
 CREATE POLICY "Admins can manage folders"
   ON public.folders FOR ALL
   TO authenticated
@@ -147,6 +156,7 @@ CREATE POLICY "Admins can manage folders"
 
 -- Photos:
 -- Public can view photos of published, non-expired events
+DROP POLICY IF EXISTS "Public can view photos for published events" ON public.photos;
 CREATE POLICY "Public can view photos for published events"
   ON public.photos FOR SELECT
   USING (
@@ -158,6 +168,7 @@ CREATE POLICY "Public can view photos for published events"
     )
   );
 
+DROP POLICY IF EXISTS "Admins can manage photos" ON public.photos;
 CREATE POLICY "Admins can manage photos"
   ON public.photos FOR ALL
   TO authenticated
@@ -166,11 +177,13 @@ CREATE POLICY "Admins can manage photos"
 
 -- Gallery Views:
 -- Anyone can insert a view (anonymous tracking)
+DROP POLICY IF EXISTS "Public can log views" ON public.gallery_views;
 CREATE POLICY "Public can log views"
   ON public.gallery_views FOR INSERT
   WITH CHECK (true);
 
 -- Only authenticated admins can read analytics
+DROP POLICY IF EXISTS "Admins can view analytics" ON public.gallery_views;
 CREATE POLICY "Admins can view analytics"
   ON public.gallery_views FOR SELECT
   TO authenticated

@@ -48,21 +48,20 @@ Currently, the application is live with its high-speed built-in demo memory stor
 
 ---
 
-## 🌐 Part 2: How to Configure the Dedicated Admin Subdomain (`admin.vasavievents.vercel.app`)
+## 🌐 Part 2: Dedicated Admin Subdomain (`vasavievents-admin.vercel.app`)
 
-We have already configured `middleware.ts` to automatically detect and route the `admin.` subdomain directly to the protected Admin Studio.
+### Understanding Vercel Domain Suffixes:
+* Under the free `*.vercel.app` domain, Vercel **only allows single-level subdomains** (such as `vasavievents.vercel.app` and `vasavievents-admin.vercel.app`).
+* Vercel rejects sub-subdomains like `admin.vasavievents.vercel.app` with the message:
+  > *"vasavi-events does not have access to \*.vasavievents.vercel.app domains"*
+  because `*.vasavievents.vercel.app` is not an apex domain you own.
+* **We have already configured and bound `vasavievents-admin.vercel.app` directly to your production project.**
+* *Note: If you ever purchase a custom domain like `vasavievents.com`, you CAN configure `admin.vasavievents.com` directly in DNS, and our middleware will automatically route it!*
 
-### To attach the subdomain on Vercel:
-1. In your [Vercel Dashboard](https://vercel.com/dashboard), open the **`vasavi_events`** project.
-2. Go to **Settings** -> **Domains**.
-3. In the input box, enter:
-   ```
-   admin.vasavievents.vercel.app
-   ```
-4. Click **Add**.
-5. Vercel will instantly issue an SSL certificate for `admin.vasavievents.vercel.app`.
-6. Now, whenever you visit `https://admin.vasavievents.vercel.app`, it will automatically open the Admin Portal!
-7. The public URL `https://vasavievents.vercel.app` remains 100% clean and client-facing with no admin links visible to visitors.
+### Live URLs:
+1. **Client Guest Gallery**: `https://vasavievents.vercel.app` (100% clean client experience, zero admin links visible).
+2. **Dedicated Admin Portal**: `https://vasavievents-admin.vercel.app` (directly loads the Admin Management Studio).
+3. **Alternative Direct Route**: `https://vasavievents.vercel.app/admin`
 
 ---
 

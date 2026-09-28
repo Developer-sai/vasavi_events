@@ -155,7 +155,7 @@ export default async function AdminAnalyticsPage() {
                 Guest Acquisition Channels
               </h3>
               <p className="text-xs text-[#7A6F64] mb-6">
-                How clients and wedding guests discover Subbu's links
+                How clients and wedding guests discover your gallery links
               </p>
 
               <div className="space-y-4 text-xs font-sans">
@@ -201,7 +201,7 @@ export default async function AdminAnalyticsPage() {
             </div>
 
             <div className="p-3.5 rounded-xl bg-[#FAF8F5] border border-[#EBE6DF] mt-6 text-[11px] text-[#7A6F64]">
-              💡 <strong>Subbu Pro Tip</strong>: Printing the QR code on the welcome board at Vasavi Kalyana Mandapam boosts immediate guest viewing by over 40%!
+              💡 <strong>Studio Pro Tip</strong>: Printing the QR code on the welcome board at the venue boosts immediate guest viewing by over 40%!
             </div>
           </div>
         </div>

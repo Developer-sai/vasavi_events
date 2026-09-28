@@ -37,7 +37,7 @@ export function AdminSidebar() {
                 Vasavi Events
               </h1>
               <p className="text-[10px] tracking-wider uppercase text-[#C59350] font-sans font-medium">
-                Subbu Studio Admin
+                Admin Studio
               </p>
             </div>
           </Link>
@@ -87,12 +87,12 @@ export function AdminSidebar() {
         <div className="pt-2 flex items-center justify-between px-3.5 py-2 rounded-xl bg-black/30 border border-[#262320]">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-[#C59350]/20 border border-[#C59350]/40 flex items-center justify-center text-[#C59350] font-semibold text-xs">
-              S
+              A
             </div>
             <div>
-              <p className="text-xs font-medium text-[#FAF8F5]">Subbu</p>
+              <p className="text-xs font-medium text-[#FAF8F5]">Admin</p>
               <p className="text-[10px] text-[#FAF8F5]/50 truncate max-w-[100px]">
-                admin@vasavi.com
+                admin@vasavievents.com
               </p>
             </div>
           </div>

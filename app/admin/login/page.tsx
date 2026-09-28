@@ -9,7 +9,7 @@ import { createClient as createBrowserSupabase } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("subbu@vasavievents.com");
+  const [email, setEmail] = useState("admin@vasavievents.com");
   const [password, setPassword] = useState("admin123");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
         <BrandEmblem size="sm" subtitle="ADMIN PORTAL" theme="dark" />
 
         <div className="text-center my-6">
-          <h2 className="font-serif text-2xl text-[#FAF8F5]">Subbu Management Portal</h2>
+          <h2 className="font-serif text-2xl text-[#FAF8F5]">Vasavi Events Studio</h2>
           <p className="text-xs text-[#FAF8F5]/60 mt-1 font-sans">
             Sign in to manage client galleries, upload event photos, and view analytics.
           </p>
@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
         <form onSubmit={handleLogin} className="space-y-4 font-sans text-xs">
           <div>
             <label className="block text-[#FAF8F5]/80 font-medium mb-1.5 uppercase tracking-wider text-[10px]">
-              Email Address
+              Admin Email Address
             </label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A6F64]" />
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-black/40 border border-[#262320] rounded-xl py-3 pl-10 pr-4 text-[#FAF8F5] placeholder-[#7A6F64] outline-none focus:border-[#C59350] transition"
-                placeholder="subbu@vasavievents.com"
+                placeholder="admin@vasavievents.com"
               />
             </div>
           </div>

@@ -2,15 +2,15 @@ import { EventItem } from "@/types";
 
 export const INITIAL_DEMO_EVENTS: EventItem[] = [
   {
-    id: "evt-sai-nithya-2026",
-    owner_id: "usr-subbu-admin",
-    name: "Sai Weds Nithya",
-    customer_names: "Sai & Nithya",
+    id: "evt-wedding-2026",
+    owner_id: "usr-admin",
+    name: "The Grand Wedding Celebration",
+    customer_names: "Ananya & Siddharth",
     event_type: "Wedding",
     event_date: "2026-05-05",
-    description: "A celebration of love, sacred traditions, and timeless memories at Vasavi Kalyana Mandapam.",
+    description: "A celebration of love, sacred traditions, and timeless memories at Vasavi Events.",
     cover_image_url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1920&q=85",
-    public_slug: "sai-weds-nithya",
+    public_slug: "grand-wedding-celebration",
     expires_at: null, // Never expires
     is_published: true,
     view_count: 348,

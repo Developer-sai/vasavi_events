@@ -74,7 +74,7 @@ export function PublicGalleryClient({ initialEvent }: PublicGalleryClientProps) 
             Vasavi Events
           </p>
           <p className="text-[11px] text-[#A69C90]">
-            Crafting and delivering timeless celebration memories for Subbu & clients.
+            Crafting and delivering timeless celebration memories for clients and guests.
           </p>
           <div className="mt-3 text-[10px] text-[#C59350] tracking-wider uppercase">
             Powered by Vasavi Events Digital Memories

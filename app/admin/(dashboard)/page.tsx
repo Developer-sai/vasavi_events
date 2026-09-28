@@ -50,8 +50,8 @@ export default async function AdminDashboardPage() {
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F5]">
       <AdminHeader
-        title="Welcome back, Subbu"
-        subtitle="Manage wedding halls, client galleries, folders, and public share links."
+        title="Executive Studio Dashboard"
+        subtitle="Manage celebration galleries, ceremonial folders, and public share links."
         action={{
           label: "Create New Event",
           href: "/admin/events/new",
@@ -98,7 +98,7 @@ export default async function AdminDashboardPage() {
                 Recent Event Galleries
               </h2>
               <p className="text-xs text-[#7A6F64]">
-                Quick access to Subbu's active events and photo collections.
+                Quick access to your active events and photo collections.
               </p>
             </div>
             <Link
@@ -175,17 +175,17 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Tips for Subbu */}
+        {/* Workflow Tips */}
         <div className="p-5 rounded-2xl bg-[#C59350]/10 border border-[#C59350]/20 flex items-start gap-4">
           <div className="p-2 rounded-xl bg-[#C59350]/20 text-[#A9753C] shrink-0 mt-0.5">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
             <h4 className="font-serif text-sm font-semibold text-[#1A1714]">
-              Subbu's Workflow Guide
+              Studio Workflow Guide
             </h4>
             <p className="text-xs text-[#7A6F64] mt-0.5 leading-relaxed">
-              When Sai or any wedding client books your hall, create the event here, add ceremonies like <strong>Wedding Highlights, Haldi, Couple Shoot, and Reception</strong>, and upload photos in batches. Once published, click <strong>"Copy Link"</strong> or <strong>"Download QR"</strong> to send directly to the family on WhatsApp!
+              When a client books an event, create the event here, add ceremonies like <strong>Wedding Highlights, Haldi, Couple Shoot, and Reception</strong>, and upload photos in batches. Once published, click <strong>"Copy Link"</strong> or <strong>"Download QR"</strong> to share directly with the family!
             </p>
           </div>
         </div>

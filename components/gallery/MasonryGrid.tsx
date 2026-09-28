@@ -20,7 +20,7 @@ export function MasonryGrid({ photos, onPhotoClick }: MasonryGridProps) {
         </div>
         <h3 className="font-serif text-2xl text-[#1A1714]">No Photos in This Folder</h3>
         <p className="text-xs text-[#7A6F64] mt-1 max-w-sm mx-auto">
-          Subbu hasn’t added photos to this collection yet. Check back soon or select "All Photos".
+          No photos have been added to this collection yet. Check back soon or select "All Photos".
         </p>
       </div>
     );

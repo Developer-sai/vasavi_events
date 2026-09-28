@@ -79,7 +79,7 @@ export default function NewEventPage() {
         is_published: true,
       });
 
-      // Populate default ceremonial folders for Subbu's convenience
+      // Populate default ceremonial folders
       const defaultFolders = [
         "Wedding Highlights",
         "Couple Shoot",
@@ -103,7 +103,7 @@ export default function NewEventPage() {
     <div className="flex-1 flex flex-col bg-[#FAF8F5]">
       <AdminHeader
         title="Create New Event Gallery"
-        subtitle="Set up event details, public share slug, and ceremonial folders for Subbu's client."
+        subtitle="Set up event details, public share slug, and ceremonial folders."
       />
 
       <div className="p-6 max-w-4xl w-full mx-auto">
@@ -123,7 +123,7 @@ export default function NewEventPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Sai Weds Nithya"
+                  placeholder="e.g. Royal Wedding Celebration"
                   value={name}
                   onChange={handleNameChange}
                   className="w-full text-sm bg-[#FAF8F5] border border-[#EBE6DF] rounded-xl px-4 py-2.5 outline-none focus:border-[#C59350] transition font-sans"
@@ -136,7 +136,7 @@ export default function NewEventPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Sai & Nithya"
+                  placeholder="e.g. Ananya & Siddharth"
                   value={customerNames}
                   onChange={(e) => setCustomerNames(e.target.value)}
                   className="w-full text-sm bg-[#FAF8F5] border border-[#EBE6DF] rounded-xl px-4 py-2.5 outline-none focus:border-[#C59350] transition font-sans"
@@ -270,7 +270,7 @@ export default function NewEventPage() {
                     setSlug(e.target.value);
                     setSlugModified(true);
                   }}
-                  placeholder="sai-weds-nithya"
+                  placeholder="royal-wedding-celebration"
                   className="w-full text-xs font-mono bg-transparent outline-none text-[#1A1714]"
                 />
               </div>

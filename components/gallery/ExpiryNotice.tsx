@@ -33,11 +33,11 @@ export function ExpiryNotice({ eventName, expiresAt }: ExpiryNoticeProps) {
         <div className="my-6 p-4 rounded-xl bg-black/40 border border-[#262320] text-xs text-[#FAF8F5]/60 text-left">
           <p className="font-medium text-[#FAF8F5]/90 mb-1">Need access to these memories?</p>
           <p>
-            Please contact Subbu or Vasavi Events management to request an extension or an archived download drive.
+            Please contact Vasavi Events management to request an extension or an archived download drive.
           </p>
           <div className="flex items-center gap-2 mt-3 text-[#C59350] font-medium">
             <Phone className="w-3.5 h-3.5" />
-            +91 98480 22338 / Subbu Management
+            +91 98480 22338 / Event Management
           </div>
         </div>
 

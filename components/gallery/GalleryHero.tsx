@@ -12,47 +12,51 @@ interface GalleryHeroProps {
 
 export function GalleryHero({ event }: GalleryHeroProps) {
   return (
-    <div className="relative w-full bg-[#12100E] text-[#FAF8F5] overflow-hidden border-b border-[#262320]">
-      {/* Background Ambience Layer */}
+    <div className="relative w-full min-h-[480px] sm:min-h-[540px] flex items-center justify-center bg-[#12100E] text-[#FAF8F5] overflow-hidden">
+      {/* Background Image Layer with Cinematic Vignette */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity filter blur-xs"
+        className="absolute inset-0 bg-cover bg-center opacity-40 scale-105 transition-transform duration-1000 ease-out"
         style={{ backgroundImage: `url(${event.cover_image_url})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#12100E]/70 via-[#12100E]/90 to-[#12100E]" />
+      
+      {/* Soft Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] via-[#12100E]/70 to-[#12100E]/90" />
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#12100E]/40 to-[#12100E]" />
 
-      {/* Main Luxury Brand Masthead */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 flex flex-col items-center justify-center text-center">
-        {/* Emblem */}
-        <BrandEmblem size="lg" subtitle="PHOTOGRAPHY & MEMORIES" theme="dark" />
+      {/* Main Luxury Content Plaque */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-16 flex flex-col items-center justify-center text-center">
+        {/* Brand Monogram */}
+        <BrandEmblem size="md" subtitle="COLLECTION ARCHIVES" theme="dark" />
 
-        {/* Divider hairline */}
-        <div className="w-24 h-px bg-gradient-to-r from-transparent via-[#C59350] to-transparent my-4" />
+        {/* Delicate Golden Accent */}
+        <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C59350] to-transparent my-3" />
 
-        {/* Couple / Event Title */}
-        <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-wide text-[#FAF8F5] mt-2">
+        {/* Event Name */}
+        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-light tracking-tight text-[#FAF8F5] leading-tight drop-shadow-sm">
           {event.name}
-        </h2>
+        </h1>
 
-        {/* Customer Names & Subtext */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm font-sans text-[#FAF8F5]/80 mt-3 font-medium">
-          <span className="flex items-center gap-1.5 text-[#C59350]">
-            <Calendar className="w-3.5 h-3.5" />
+        {/* Event Metadata Ribbon */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-sans text-[#FAF8F5]/85 mt-4 font-normal">
+          <span className="flex items-center gap-1.5 text-[#EED9B9]">
+            <Calendar className="w-3.5 h-3.5 text-[#C59350]" />
             {formatDate(event.event_date)}
           </span>
-          <span>•</span>
+          <span className="text-[#C59350]/60">•</span>
           <span className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#D1A870]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#C59350]" />
             {event.customer_names}
           </span>
-          <span>•</span>
-          <span className="flex items-center gap-1.5 text-[#FAF8F5]/70">
+          <span className="text-[#C59350]/60">•</span>
+          <span className="flex items-center gap-1.5 text-[#FAF8F5]/75">
             <MapPin className="w-3.5 h-3.5 text-[#C59350]" />
-            Vasavi Kalyana Mandapam
+            Vasavi Events
           </span>
         </div>
 
+        {/* Welcoming Subtitle */}
         {event.description && (
-          <p className="max-w-2xl text-xs sm:text-sm font-serif italic text-[#FAF8F5]/70 mt-4 leading-relaxed">
+          <p className="max-w-xl text-xs sm:text-sm font-serif italic text-[#FAF8F5]/75 mt-5 leading-relaxed tracking-wide">
             "{event.description}"
           </p>
         )}

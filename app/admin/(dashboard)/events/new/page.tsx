@@ -299,8 +299,8 @@ export default function NewEventPage() {
                 Shareable Link Slug
               </label>
               <div className="flex items-center gap-2 bg-[#FAF8F5] border border-[#EBE6DF] rounded-xl px-3 py-2">
-                <span className="text-xs text-[#7A6F64] font-mono shrink-0">
-                  /gallery/
+                <span className="text-xs text-[#7A6F64] font-mono shrink-0 select-none">
+                  vasavievents.vercel.app/gallery/
                 </span>
                 <input
                   type="text"

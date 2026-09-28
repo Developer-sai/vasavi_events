@@ -34,6 +34,7 @@ import {
   updateEventAction,
 } from "@/actions/events";
 import { uploadPhotoFile } from "@/lib/storage/uploader";
+import { getPublicGalleryUrl } from "@/lib/utils/urls";
 
 interface EventStudioClientProps {
   initialEvent: EventItem;
@@ -60,10 +61,7 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<string[]>([]);
   const [targetMoveFolderId, setTargetMoveFolderId] = useState<string>("");
 
-  const publicUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/gallery/${event.public_slug}`
-      : `/gallery/${event.public_slug}`;
+  const publicUrl = getPublicGalleryUrl(event.public_slug);
 
   const allPhotos = event.photos || [];
   const folders = event.folders || [];
@@ -299,14 +297,15 @@ export function EventStudioClient({ initialEvent }: EventStudioClientProps) {
           </button>
 
           {/* Open Public */}
-          <Link
-            href={`/gallery/${event.public_slug}`}
+          <a
+            href={publicUrl}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1A1714] hover:bg-[#262320] text-xs font-medium text-[#FAF8F5] transition"
           >
             <ExternalLink className="w-4 h-4 text-[#C59350]" />
             Preview Public Gallery
-          </Link>
+          </a>
         </div>
       </div>
 

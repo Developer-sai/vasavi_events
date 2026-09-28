@@ -23,6 +23,16 @@ export function middleware(req: NextRequest) {
     url.pathname === "/admin/forgot-password" ||
     url.pathname.startsWith("/api/auth");
 
+  // CRITICAL FIX: If accessing public gallery routes (/gallery/*):
+  if (url.pathname.startsWith("/gallery/")) {
+    if (isAdminSubdomain) {
+      const clientBase = process.env.NEXT_PUBLIC_APP_URL || "https://vasavievents.vercel.app";
+      return NextResponse.redirect(new URL(`${clientBase}${url.pathname}${url.search}`));
+    }
+    // On public client domain or localhost, let it pass through directly without auth check!
+    return NextResponse.next();
+  }
+
   if (isAdminSubdomain) {
     // If accessing root of admin domain:
     if (url.pathname === "/") {
@@ -48,6 +58,7 @@ export function middleware(req: NextRequest) {
       !url.pathname.startsWith("/admin") &&
       !url.pathname.startsWith("/api") &&
       !url.pathname.startsWith("/_next") &&
+      !url.pathname.startsWith("/gallery") &&
       !url.pathname.includes(".")
     ) {
       return NextResponse.rewrite(new URL(`/admin${url.pathname}`, req.url));

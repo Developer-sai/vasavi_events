@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { deleteEventAction } from "@/actions/events";
 import { EditEventModal } from "@/components/admin/EditEventModal";
+import { getPublicGalleryUrl } from "@/lib/utils/urls";
 
 interface EventsListClientProps {
   initialEvents: EventItem[];
@@ -53,7 +54,7 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
   });
 
   const handleCopyLink = async (slug: string, id: string) => {
-    const url = `${window.location.origin}/gallery/${slug}`;
+    const url = getPublicGalleryUrl(slug);
     await navigator.clipboard.writeText(url);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -244,14 +245,15 @@ export function EventsListClient({ initialEvents }: EventsListClientProps) {
                     </button>
 
                     {/* View Public */}
-                    <Link
-                      href={`/gallery/${evt.public_slug}`}
+                    <a
+                      href={getPublicGalleryUrl(evt.public_slug)}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="p-2 rounded-lg border border-[#EBE6DF] hover:bg-white text-[#7A6F64] transition"
                       title="Open Public Gallery"
                     >
                       <ExternalLink className="w-3.5 h-3.5 text-[#C59350]" />
-                    </Link>
+                    </a>
 
                     {/* Delete */}
                     <button

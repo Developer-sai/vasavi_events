@@ -12,6 +12,7 @@ import {
   CalendarHeart,
   Globe,
 } from "lucide-react";
+import { getPublicGalleryUrl } from "@/lib/utils/urls";
 
 export default async function AdminAnalyticsPage() {
   const analytics = await getAnalyticsSummary();
@@ -252,13 +253,14 @@ export default async function AdminAnalyticsPage() {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-right">
-                      <Link
-                        href={`/gallery/${e.slug}`}
+                      <a
+                        href={getPublicGalleryUrl(e.slug)}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-[#C59350] hover:text-[#A9753C] font-medium"
                       >
                         Open <ExternalLink className="w-3 h-3" />
-                      </Link>
+                      </a>
                     </td>
                   </tr>
                 ))}

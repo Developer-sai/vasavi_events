@@ -5,6 +5,8 @@ import QRCode from "qrcode";
 import { X, Copy, Check, Share2, MessageCircle, Download } from "lucide-react";
 import confetti from "canvas-confetti";
 
+import { getPublicGalleryUrl } from "@/lib/utils/urls";
+
 interface ShareModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -17,10 +19,7 @@ export function ShareModal({ isOpen, onClose, eventTitle, slug }: ShareModalProp
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const galleryUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/gallery/${slug}`
-      : `https://vasavi-events.vercel.app/gallery/${slug}`;
+  const galleryUrl = getPublicGalleryUrl(slug);
 
   useEffect(() => {
     if (isOpen) {

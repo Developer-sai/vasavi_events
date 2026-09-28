@@ -15,6 +15,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { EventItem } from "@/types";
+import { getPublicGalleryUrl } from "@/lib/utils/urls";
 
 export default async function AdminDashboardPage() {
   const events = await getEvents();
@@ -177,14 +178,15 @@ export default async function AdminDashboardPage() {
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <Link
-                        href={`/gallery/${evt.public_slug}`}
+                      <a
+                        href={getPublicGalleryUrl(evt.public_slug)}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#EBE6DF] hover:border-[#1A1714] text-xs font-sans text-[#1A1714] transition"
                       >
                         <ExternalLink className="w-3.5 h-3.5 text-[#C59350]" />
                         Public View
-                      </Link>
+                      </a>
 
                       <Link
                         href={`/admin/events/${evt.id}`}

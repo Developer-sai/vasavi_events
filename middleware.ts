@@ -4,9 +4,13 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const hostname = req.headers.get("host") || "";
 
-  // Check if accessing via admin subdomain (e.g. admin.vasavievents.vercel.app or admin.localhost:3000)
+  // Check if accessing via admin subdomain or alias
+  // Supports: admin.yourdomain.com, admin-*, *-admin.vercel.app
   const isAdminSubdomain =
-    hostname.startsWith("admin.") || hostname.startsWith("admin-");
+    hostname.startsWith("admin.") ||
+    hostname.startsWith("admin-") ||
+    hostname.includes("-admin.") ||
+    hostname.startsWith("vasavievents-admin");
 
   if (isAdminSubdomain) {
     // If user is at root of admin subdomain, rewrite to /admin

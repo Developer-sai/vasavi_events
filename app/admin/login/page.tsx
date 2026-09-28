@@ -19,8 +19,8 @@ import { bootstrapAdminUser, setAdminSessionAction } from "@/actions/auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@vasavievents.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"signin" | "register">("signin");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -244,10 +244,11 @@ export default function AdminLoginPage() {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-black/40 border border-[#262320] rounded-xl py-3 pl-10 pr-4 text-[#FAF8F5] placeholder-[#7A6F64] outline-none focus:border-[#C59350] transition"
-                placeholder="admin@vasavievents.com"
+                placeholder="name@vasavievents.com"
               />
             </div>
           </div>
@@ -271,6 +272,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-black/40 border border-[#262320] rounded-xl py-3 pl-10 pr-4 text-[#FAF8F5] placeholder-[#7A6F64] outline-none focus:border-[#C59350] transition"

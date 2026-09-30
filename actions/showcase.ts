@@ -66,3 +66,10 @@ export async function moveShowcasePhotoAction(
   revalidatePath("/admin");
   return success;
 }
+
+export async function refreshLiveWebsiteAction(): Promise<boolean> {
+  revalidatePath("/");
+  revalidatePath("/admin");
+  return true;
+}
+

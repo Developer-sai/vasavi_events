@@ -2,7 +2,6 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 export default async function AdminDashboardLayout({
   children,
@@ -29,14 +28,8 @@ export default async function AdminDashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] flex flex-col md:flex-row text-[#1A1714]">
-      {/* Sidebar for Desktop */}
-      <AdminSidebar />
-
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {children}
-      </main>
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1A1714]">
+      {children}
     </div>
   );
 }

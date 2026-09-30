@@ -5,9 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
-  CalendarHeart,
-  PlusCircle,
-  BarChart3,
+  Images,
   ExternalLink,
   LogOut,
   Camera,
@@ -41,10 +39,7 @@ export function AdminSidebar() {
   };
 
   const links = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/events", label: "All Events", icon: CalendarHeart },
-    { href: "/admin/events/new", label: "Create Event", icon: PlusCircle },
-    { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { href: "/admin", label: "Showcase Studio", icon: Images },
   ];
 
   return (
@@ -61,7 +56,7 @@ export function AdminSidebar() {
                 Vasavi Events
               </h1>
               <p className="text-[10px] tracking-wider uppercase text-[#C59350] font-sans font-medium">
-                Admin Studio
+                Showcase Studio
               </p>
             </div>
           </Link>
@@ -71,10 +66,7 @@ export function AdminSidebar() {
         <nav className="p-4 space-y-1.5 font-sans">
           {links.map((link) => {
             const Icon = link.icon;
-            const isActive =
-              link.href === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(link.href);
+            const isActive = pathname === link.href;
 
             return (
               <Link

@@ -13,6 +13,8 @@ import {
   Minimize,
   MessageCircle,
   Share2,
+  Check,
+  Plus,
 } from "lucide-react";
 
 interface ShowcaseLightboxProps {
@@ -22,6 +24,8 @@ interface ShowcaseLightboxProps {
   onClose: () => void;
   onNavigate: (index: number) => void;
   folders?: Folder[];
+  selectedPhotoIds?: string[];
+  onToggleSelectPhoto?: (photoId: string) => void;
 }
 
 export function ShowcaseLightbox({
@@ -31,6 +35,8 @@ export function ShowcaseLightbox({
   onClose,
   onNavigate,
   folders = [],
+  selectedPhotoIds = [],
+  onToggleSelectPhoto,
 }: ShowcaseLightboxProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -136,6 +142,35 @@ export function ShowcaseLightbox({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* Select / Shortlist Button */}
+          {onToggleSelectPhoto && currentPhoto && (
+            <button
+              onClick={() => onToggleSelectPhoto(currentPhoto.id)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
+                selectedPhotoIds.includes(currentPhoto.id)
+                  ? "bg-[#C59350] text-[#12100E] shadow-sm"
+                  : "bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20"
+              }`}
+              title={
+                selectedPhotoIds.includes(currentPhoto.id)
+                  ? "Remove from selected shortlist"
+                  : "Add to multi-photo inquiry shortlist"
+              }
+            >
+              {selectedPhotoIds.includes(currentPhoto.id) ? (
+                <>
+                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <span>Selected</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Select</span>
+                </>
+              )}
+            </button>
+          )}
+
           {/* WhatsApp Enquiry Button */}
           <button
             onClick={handleWhatsAppEnquiry}
